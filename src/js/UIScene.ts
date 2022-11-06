@@ -161,12 +161,15 @@ export default class UIScene extends Phaser.Scene {
         item1Group.add(item1);
         item1Group.add(item1Image);
         item1Group.add(item1Purchase);
+
         item2Group.add(item2);
         item2Group.add(item2Image);
         item2Group.add(item2Purchase);
+
         item3Group.add(item3);
         item3Group.add(item3Image);
         item3Group.add(item3Purchase);
+        
         item4Group.add(item4);
         item4Group.add(item4Image);
         item4Group.add(item4Purchase);
@@ -189,6 +192,7 @@ export default class UIScene extends Phaser.Scene {
             boughtItemUIGroup.setVisible(true);
             //IfSuccess
             successItemGroup.setVisible(true);
+            console.log(this)
             successOkButton.on("pointerdown", () => {
                 this.LoadWeapon(this, "weaponA", "https://www.models-resource.com/resources/big_icons/47/46765.png");
             });

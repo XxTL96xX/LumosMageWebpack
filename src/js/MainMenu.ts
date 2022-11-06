@@ -3,6 +3,7 @@ import * as weapons from "../data/weapon.json";
 
 var inventoryActive;
 var startGameTxt;
+var currentAcc;
 
 export default class MainMenuScene extends Phaser.Scene {
     constructor() {
@@ -27,35 +28,28 @@ export default class MainMenuScene extends Phaser.Scene {
             (window as any).ethereum
                 .request({ method: "eth_requestAccounts" })
                 .then((accounts) => {
-                    const account = accounts[0]
+                    currentAcc = accounts[0]
 
-                    console.log(account)
-
-                    try {
-                        
-                        socket.emit('get_current_weapon', account);
-
-                        socket.on('output_current_weapon', async (msg) => {
-                            console.log("msg current weapon", msg)
-                            console.log("trigger")
-                            
-                            if(msg.data != null){
-                                console.log(this)
-                                await this.LoadEquippedWeapon(this, "weaponDefault"+msg.data, msg.data)
-                            }
-                            else {
-                                this.data.set("weaponKey", "baseBall");
-                            }
-                        });
-
-                    } catch (e) {
-                        console.log(e)
-                    }
+                    socket.emit('get_current_weapon', currentAcc);
 
                 })
         } else {
             window.open("https://metamask.io/download/", "_blank");
         }
+
+
+        socket.on('output_current_weapon', async (msg) => {
+            console.log("msg current weapon", msg)
+            console.log("trigger")
+            
+            if(msg.data != null){
+                console.log(this)
+                await this.LoadEquippedWeapon(this, "weaponDefault"+msg.data, msg.data)
+            }
+            else {
+                this.data.set("weaponKey", "baseBall");
+            }
+        });
 
                         
 
