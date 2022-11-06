@@ -199,7 +199,7 @@ export default class UIScene extends Phaser.Scene {
             //IfSuccess
             successItemGroup.setVisible(true);
             successOkButton.on("pointerdown", () => {
-                this.buyAction(this, weaponURL)
+                this.buyAction(this, weaponURL, "weaponA")
                 // this.LoadWeapon(this, "weaponA", "https://www.models-resource.com/resources/big_icons/47/46765.png");
             });
 
@@ -217,7 +217,7 @@ export default class UIScene extends Phaser.Scene {
             //IfSuccess
             successItemGroup.setVisible(true);
             successOkButton.on("pointerdown", () => {
-                this.buyAction(this, weaponURL)
+                this.buyAction(this, weaponURL, "weaponB")
                 // this.LoadWeapon(this, "weaponB", "https://ipfs.io/ipfs/bafybeiftozlbi6xzus4cwafyx7fchi4wgqqrzszy3c6edzft5fj7k6fnre/Sprite.png");
             });
 
@@ -235,7 +235,7 @@ export default class UIScene extends Phaser.Scene {
             //IfSuccess
             successItemGroup.setVisible(true);
             successOkButton.on("pointerdown", () => {
-                this.buyAction(this, weaponURL)
+                this.buyAction(this, weaponURL, "weaponC")
                 // this.LoadWeapon(this, "weaponC", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP59xUwswU7oPpPUZ_CbN1rzneNS8Nj6gIQuMxVIAyaVQyKTu5AF2Pz9T3RT5AuIb3QRc&usqp=CAU");
             });
 
@@ -253,7 +253,7 @@ export default class UIScene extends Phaser.Scene {
             //IfSuccess
             successItemGroup.setVisible(true);
             successOkButton.on("pointerdown", () => {
-                this.buyAction(this, weaponURL)
+                this.buyAction(this, weaponURL, "weaponD")
                 // this.LoadWeapon(this, "weaponD", "https://www.tldevtech.com/wp-content/uploads/2020/09/sword_hrey_02.png");
             });
 
@@ -386,7 +386,7 @@ export default class UIScene extends Phaser.Scene {
 
     }
 
-    async buyAction(theGame, weaponURL){
+    async buyAction(theGame, weaponURL, weaponKey){
         let currentAcc = "";
         if (typeof (window as any).ethereum !== "undefined") {
             await (window as any).ethereum
@@ -407,7 +407,8 @@ export default class UIScene extends Phaser.Scene {
             // socket.on('output_weapon_shop', function(msg) {
             // console.log("msg", msg)
             // });
-            theGame.RestartGameWithWeapon(theGame);
+            //theGame.RestartGameWithWeapon(theGame);
+            theGame.scene.get("Game-Scene").data.set("weaponKey", weaponKey);
 
         }catch(e){
             console.log(e)
@@ -454,7 +455,7 @@ export default class UIScene extends Phaser.Scene {
             theGame.load.once('complete', () => {
                 //theGame.scene.get("MainMenu-Scene").data.set("weaponKey", key);
                 //console.log("Set to : " + theGame.scene.get("MainMenu-Scene").data.get("weaponKey"));
-                theGame.RestartGameWithWeapon(theGame);
+                //theGame.RestartGameWithWeapon(theGame);
             }, theGame);
 
             theGame.load.start();
@@ -462,7 +463,7 @@ export default class UIScene extends Phaser.Scene {
         else {
             //theGame.scene.get("MainMenu-Scene").data.set("weaponKey", key);
             //console.log("Set to : " + theGame.scene.get("MainMenu-Scene").data.get("weaponKey"));
-            theGame.RestartGameWithWeapon(theGame);
+            //theGame.RestartGameWithWeapon(theGame);
         }
     }
 
