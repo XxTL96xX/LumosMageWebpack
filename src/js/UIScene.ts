@@ -52,8 +52,8 @@ export default class UIScene extends Phaser.Scene {
 
             socket.emit('get_shop_weapon_list', weapons);
 
-            socket.on('output_weapon_shop', function (msg) {
-                console.log("msg", msg)
+            socket.on('output_weapon_shop', (msg) => {
+                console.log("msg weapon shop", msg)
                 for (var i = 0; i < msg.data.length; i++) {
                     this.LoadShopWeapons(this, weaponKeyNames[i], msg.data[i], i);
                 }

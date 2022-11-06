@@ -15,6 +15,7 @@ export default class MainMenuScene extends Phaser.Scene {
 
     create() {
         this.data.set("weaponKey", "baseBall");
+        var socket = io("http://localhost:3010");
         
         if (typeof (window as any).ethereum !== "undefined") {
             (window as any).ethereum
@@ -25,15 +26,16 @@ export default class MainMenuScene extends Phaser.Scene {
                     console.log(account)
 
                     try {
-                        var socket = io("http://localhost:3010");
-
+                        
                         socket.emit('get_current_weapon', account);
 
-                        socket.on('output_current_weapon', function (msg) {
-                            console.log("msg", msg)
+                        socket.on('output_current_weapon', async (msg) => {
+                            console.log("msg current weapon", msg)
+                            console.log("trigger")
                             
-                            if(msg.data[0] != null){
-                                this.LoadEquippedWeapon(this, "weaponDefault", msg.data[0])
+                            if(msg.data != null){
+                                console.log(this)
+                                await this.LoadEquippedWeapon(this, "weaponDefault"+msg.data, msg.data)
                             }
                             else{
                                 this.data.set("weaponKey", "baseBall");
@@ -48,6 +50,8 @@ export default class MainMenuScene extends Phaser.Scene {
         } else {
             window.open("https://metamask.io/download/", "_blank");
         }
+
+                        
 
         /*if (this.data.get("weaponKey") == "baseBall" || this.data.get("weaponKey") == null)
             this.data.set("weaponKey", "baseBall");
@@ -229,10 +233,11 @@ export default class MainMenuScene extends Phaser.Scene {
         startGameTxt.setVisible(true);
     }
 
-    LoadEquippedWeapon(theGame, key, url) {
+    async LoadEquippedWeapon(theGame, key, url) {
         if (!theGame.textures.exists(key)) {
             theGame.load.image(key, url);
-            theGame.load.once('complete', () => {
+            await theGame.load.once('complete', () => {
+                console.log("masuk belum")
                 this.data.set("weaponKey", key);
                 //console.log("data in MM : " + this.data.get("weaponKey"));
             }, theGame);
@@ -240,6 +245,7 @@ export default class MainMenuScene extends Phaser.Scene {
             theGame.load.start();
         }
         else {
+            console.log("masuk dah")
             this.data.set("weaponKey", key);
         }
     }
