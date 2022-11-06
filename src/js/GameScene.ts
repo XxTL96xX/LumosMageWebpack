@@ -192,18 +192,18 @@ export default class HelloWorldScene extends Phaser.Scene {
 
     keyObjSpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE, false);
     keyObjSpace.on('down', function (event) {
-      socket.emit('get_current_weapon', account);
-      socket.on('output_current_weapon', async (msg) => {
-        console.log("msg current weapon", msg)
-        console.log("trigger")
+      // socket.emit('get_current_weapon', account);
+      // socket.on('output_current_weapon', async (msg) => {
+      //   console.log("msg current weapon", msg)
+      //   console.log("trigger")
         
-        if(msg.data != null){
-            await mainMenuScene.LoadEquippedWeapon(this, "weaponDefault"+msg.data, msg.data)
-        }
-        else{
-            this.data.set("weaponKey", "baseBall");
-        }
-      });
+      //   if(msg.data != null){
+      //       await mainMenuScene.LoadEquippedWeapon(this, "weaponDefault"+msg.data, msg.data)
+      //   }
+      //   else{
+      //       this.data.set("weaponKey", "baseBall");
+      //   }
+      // });
       //console.log(playerSprite.texture.key)
       if (playerSprite.texture.key == "PlayerLeft") {
         bullet = this.add.sprite(playerSprite.x - 30, playerSprite.y, this.data.get("weaponKey")).setOrigin(0.5);

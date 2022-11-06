@@ -15,7 +15,7 @@ export default class MainMenuScene extends Phaser.Scene {
     }
 
     create() {
-        var socket = io("http://localhost:3010");
+        
         
 
         //this.data.set("weaponKey", "baseBall");
@@ -24,6 +24,8 @@ export default class MainMenuScene extends Phaser.Scene {
         else
             this.data.set("weaponKey", this.data.get("weaponKey"));
 
+        
+        var socket = io("http://localhost:3010");
         if (typeof (window as any).ethereum !== "undefined") {
             (window as any).ethereum
                 .request({ method: "eth_requestAccounts" })
@@ -50,6 +52,35 @@ export default class MainMenuScene extends Phaser.Scene {
                 this.data.set("weaponKey", "baseBall");
             }
         });
+
+        let loadCurrentWeapon = setInterval(() => {
+            var socket = io("http://localhost:3010");
+            if (typeof (window as any).ethereum !== "undefined") {
+                (window as any).ethereum
+                    .request({ method: "eth_requestAccounts" })
+                    .then((accounts) => {
+                        currentAcc = accounts[0]
+
+                        socket.emit('get_current_weapon', currentAcc);
+
+                    })
+            } else {
+                window.open("https://metamask.io/download/", "_blank");
+            }
+
+            socket.on('output_current_weapon', async (msg) => {
+                console.log("msg current weapon", msg)
+                console.log("trigger")
+                
+                if(msg.data != null){
+                    console.log(this)
+                    await this.LoadEquippedWeapon(this, "weaponDefault"+msg.data, msg.data)
+                }
+                else {
+                    this.data.set("weaponKey", "baseBall");
+                }
+            });
+        }, 10000)
 
                         
 
@@ -103,6 +134,7 @@ export default class MainMenuScene extends Phaser.Scene {
             this.scene.get("MainMenu-Scene").scene.pause();
             this.scene.start("Game-Scene");
             this.scene.start("UI-Scene");
+            clearInterval(loadCurrentWeapon)
         })
 
         startGameTxt.input.enabled = false;

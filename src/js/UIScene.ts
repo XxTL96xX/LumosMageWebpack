@@ -61,7 +61,7 @@ export default class UIScene extends Phaser.Scene {
                 console.log("msg weapon shop", msg)
                 weaponUrls = msg.data;
                 for (var i = 0; i < msg.data.length; i++) {
-                    this.LoadShopWeapons(this, weaponKeyNames[i], msg.data[i], i);
+                    this.LoadShopWeapons(this, weaponKeyNames[i]+msg.data[i], msg.data[i], i);
                 }
             });
 
@@ -430,6 +430,7 @@ export default class UIScene extends Phaser.Scene {
     }
 
     LoadShopWeapons(theGame, key, url, index) {
+        console.log("url", url)
         if (!theGame.textures.exists(key)) {
             theGame.load.image(key, url);
             theGame.load.once('complete', () => {
