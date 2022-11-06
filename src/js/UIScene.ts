@@ -19,6 +19,7 @@ var allItemGroups = [];
 var shouldActivateItems = [false, false, false, false];
 
 var weaponKeyNames = ["weaponA", "weaponB", "weaponC", "weaponD"];
+var weaponUrls = [];
 
 
 export default class UIScene extends Phaser.Scene {
@@ -58,6 +59,7 @@ export default class UIScene extends Phaser.Scene {
 
             socket.on('output_weapon_shop', (msg) => {
                 console.log("msg weapon shop", msg)
+                weaponUrls = msg.data;
                 for (var i = 0; i < msg.data.length; i++) {
                     this.LoadShopWeapons(this, weaponKeyNames[i], msg.data[i], i);
                 }
@@ -190,6 +192,10 @@ export default class UIScene extends Phaser.Scene {
 
         item1Purchase.on("pointerdown", () => {
             boughtItemUIGroup.setVisible(true);
+
+            if(weaponUrls.length >= 1){
+                var url = weaponUrls[0];
+            }
             //IfSuccess
             successItemGroup.setVisible(true);
             console.log(this)
@@ -203,6 +209,10 @@ export default class UIScene extends Phaser.Scene {
 
         item2Purchase.on("pointerdown", () => {
             boughtItemUIGroup.setVisible(true);
+
+            if(weaponUrls.length >= 2){
+                var url = weaponUrls[1];
+            }
             //IfSuccess
             successItemGroup.setVisible(true);
             successOkButton.on("pointerdown", () => {
@@ -215,6 +225,10 @@ export default class UIScene extends Phaser.Scene {
 
         item3Purchase.on("pointerdown", () => {
             boughtItemUIGroup.setVisible(true);
+
+            if(weaponUrls.length >= 3){
+                var url = weaponUrls[2];
+            }
             //IfSuccess
             successItemGroup.setVisible(true);
             successOkButton.on("pointerdown", () => {
@@ -227,6 +241,10 @@ export default class UIScene extends Phaser.Scene {
 
         item4Purchase.on("pointerdown", () => {
             boughtItemUIGroup.setVisible(true);
+
+            if(weaponUrls.length >= 4){
+                var url = weaponUrls[3];
+            }
             //IfSuccess
             successItemGroup.setVisible(true);
             successOkButton.on("pointerdown", () => {
@@ -400,7 +418,7 @@ export default class UIScene extends Phaser.Scene {
         if (!theGame.textures.exists(key)) {
             theGame.load.image(key, url);
             theGame.load.once('complete', () => {
-                theGame.scene.get("MainMenu-Scene").data.set("weaponKey", key);
+                //theGame.scene.get("MainMenu-Scene").data.set("weaponKey", key);
                 //console.log("Set to : " + theGame.scene.get("MainMenu-Scene").data.get("weaponKey"));
                 theGame.RestartGameWithWeapon(theGame);
             }, theGame);
@@ -408,7 +426,7 @@ export default class UIScene extends Phaser.Scene {
             theGame.load.start();
         }
         else {
-            theGame.scene.get("MainMenu-Scene").data.set("weaponKey", key);
+            //theGame.scene.get("MainMenu-Scene").data.set("weaponKey", key);
             //console.log("Set to : " + theGame.scene.get("MainMenu-Scene").data.get("weaponKey"));
             theGame.RestartGameWithWeapon(theGame);
         }
