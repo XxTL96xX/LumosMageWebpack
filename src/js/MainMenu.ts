@@ -14,9 +14,15 @@ export default class MainMenuScene extends Phaser.Scene {
     }
 
     create() {
-        this.data.set("weaponKey", "baseBall");
         var socket = io("http://localhost:3010");
         
+
+        //this.data.set("weaponKey", "baseBall");
+        if (this.data.get("weaponKey") == "baseBall" || this.data.get("weaponKey") == null)
+            this.data.set("weaponKey", "baseBall");
+        else
+            this.data.set("weaponKey", this.data.get("weaponKey"));
+
         if (typeof (window as any).ethereum !== "undefined") {
             (window as any).ethereum
                 .request({ method: "eth_requestAccounts" })
@@ -37,7 +43,7 @@ export default class MainMenuScene extends Phaser.Scene {
                                 console.log(this)
                                 await this.LoadEquippedWeapon(this, "weaponDefault"+msg.data, msg.data)
                             }
-                            else{
+                            else {
                                 this.data.set("weaponKey", "baseBall");
                             }
                         });
@@ -54,16 +60,14 @@ export default class MainMenuScene extends Phaser.Scene {
                         
 
         /*if (this.data.get("weaponKey") == "baseBall" || this.data.get("weaponKey") == null)
+=======
+        /*if(this.data.get("weaponKey") == "baseBall" || this.data.get("weaponKey") == null){
+            this.LoadEquippedWeapon(this, "weaponDefault", "https://ipfs.io/ipfs/bafybeidax2phyhpknvh6mge3ku5q5bvnze7pubsuuvmcmp2ltgydwrqlxu/Sword.png");
+        }
+        else{
+>>>>>>> 9b8421e6b907ec43078777962c291072fcad8f64
             this.data.set("weaponKey", "baseBall");
-        else
-            this.data.set("weaponKey", this.data.get("weaponKey"));*/
-
-            /*if(this.data.get("weaponKey") == "baseBall" || this.data.get("weaponKey") == null){
-                this.LoadEquippedWeapon(this, "weaponDefault", "https://ipfs.io/ipfs/bafybeidax2phyhpknvh6mge3ku5q5bvnze7pubsuuvmcmp2ltgydwrqlxu/Sword.png");
-            }
-            else{
-                this.data.set("weaponKey", "baseBall");
-            }*/
+        }*/
 
         //BUY WEAPON
         // try{
@@ -234,6 +238,7 @@ export default class MainMenuScene extends Phaser.Scene {
     }
 
     async LoadEquippedWeapon(theGame, key, url) {
+        console.log(this)
         if (!theGame.textures.exists(key)) {
             theGame.load.image(key, url);
             await theGame.load.once('complete', () => {
