@@ -19,6 +19,7 @@ const config: Phaser.Types.Core.GameConfig = {
 	scene: [LoaderScene, MainMenuScene, GameScene, UIScene]
 };
 
+
 window.addEventListener("load", () => {
   new Phaser.Game(config);
 });
