@@ -192,15 +192,15 @@ export default class UIScene extends Phaser.Scene {
 
         item1Purchase.on("pointerdown", () => {
             boughtItemUIGroup.setVisible(true);
-
+            var weaponURL = ""
             if(weaponUrls.length >= 1){
-                var url = weaponUrls[0];
+                weaponURL = weaponUrls[0];
             }
             //IfSuccess
             successItemGroup.setVisible(true);
-            console.log(this)
             successOkButton.on("pointerdown", () => {
-                this.LoadWeapon(this, "weaponA", "https://www.models-resource.com/resources/big_icons/47/46765.png");
+                this.buyAction(this, weaponURL)
+                // this.LoadWeapon(this, "weaponA", "https://www.models-resource.com/resources/big_icons/47/46765.png");
             });
 
             //If Fail
@@ -210,13 +210,15 @@ export default class UIScene extends Phaser.Scene {
         item2Purchase.on("pointerdown", () => {
             boughtItemUIGroup.setVisible(true);
 
+            var weaponURL = ""
             if(weaponUrls.length >= 2){
-                var url = weaponUrls[1];
+                weaponURL = weaponUrls[1];
             }
             //IfSuccess
             successItemGroup.setVisible(true);
             successOkButton.on("pointerdown", () => {
-                this.LoadWeapon(this, "weaponB", "https://ipfs.io/ipfs/bafybeiftozlbi6xzus4cwafyx7fchi4wgqqrzszy3c6edzft5fj7k6fnre/Sprite.png");
+                this.buyAction(this, weaponURL)
+                // this.LoadWeapon(this, "weaponB", "https://ipfs.io/ipfs/bafybeiftozlbi6xzus4cwafyx7fchi4wgqqrzszy3c6edzft5fj7k6fnre/Sprite.png");
             });
 
             //If Fail
@@ -226,13 +228,15 @@ export default class UIScene extends Phaser.Scene {
         item3Purchase.on("pointerdown", () => {
             boughtItemUIGroup.setVisible(true);
 
+            var weaponURL = ""
             if(weaponUrls.length >= 3){
-                var url = weaponUrls[2];
+                weaponURL =  weaponUrls[2];
             }
             //IfSuccess
             successItemGroup.setVisible(true);
             successOkButton.on("pointerdown", () => {
-                this.LoadWeapon(this, "weaponC", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP59xUwswU7oPpPUZ_CbN1rzneNS8Nj6gIQuMxVIAyaVQyKTu5AF2Pz9T3RT5AuIb3QRc&usqp=CAU");
+                this.buyAction(this, weaponURL)
+                // this.LoadWeapon(this, "weaponC", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP59xUwswU7oPpPUZ_CbN1rzneNS8Nj6gIQuMxVIAyaVQyKTu5AF2Pz9T3RT5AuIb3QRc&usqp=CAU");
             });
 
             //If Fail
@@ -242,13 +246,15 @@ export default class UIScene extends Phaser.Scene {
         item4Purchase.on("pointerdown", () => {
             boughtItemUIGroup.setVisible(true);
 
+            var weaponURL = ""
             if(weaponUrls.length >= 4){
-                var url = weaponUrls[3];
+                weaponURL = weaponUrls[3];
             }
             //IfSuccess
             successItemGroup.setVisible(true);
             successOkButton.on("pointerdown", () => {
-                this.LoadWeapon(this, "weaponD", "https://www.tldevtech.com/wp-content/uploads/2020/09/sword_hrey_02.png");
+                this.buyAction(this, weaponURL)
+                // this.LoadWeapon(this, "weaponD", "https://www.tldevtech.com/wp-content/uploads/2020/09/sword_hrey_02.png");
             });
 
             //If Fail
@@ -378,6 +384,34 @@ export default class UIScene extends Phaser.Scene {
 
     update(time: number, delta: number): void {
 
+    }
+
+    async buyAction(theGame, weaponURL){
+        let currentAcc = "";
+        if (typeof (window as any).ethereum !== "undefined") {
+            await (window as any).ethereum
+                .request({ method: "eth_requestAccounts" })
+                .then((accounts) => {
+                    currentAcc = accounts[0]
+
+                })
+        } else {
+            window.open("https://metamask.io/download/", "_blank");
+        }
+
+        try{
+            var socket = io("http://localhost:3010");
+
+            socket.emit('buy_weapon', currentAcc, weaponURL);
+
+            // socket.on('output_weapon_shop', function(msg) {
+            // console.log("msg", msg)
+            // });
+            theGame.RestartGameWithWeapon(theGame);
+
+        }catch(e){
+            console.log(e)
+        }
     }
 
     SuccessPurchaseUI() {
