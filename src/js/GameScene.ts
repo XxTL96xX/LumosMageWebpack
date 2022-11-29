@@ -49,7 +49,9 @@ export default class HelloWorldScene extends Phaser.Scene {
     thisScene = this;
     mainMenuScene = this.scene.get("MainMenu-Scene");
 
+    
     var socket = io("http://localhost:3010");
+
     socket.on('output_current_weapon', async (msg) => {
       console.log("msg current game scene weapon", msg)
       console.log("trigger")
